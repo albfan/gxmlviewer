@@ -15,13 +15,27 @@ BuildRoot: /var/tmp/gxmlviewer-%{PACKAGE_VERSION}-root
 %description
 A GTK+ based XML file viewer.
 
-%package -n xmlview-control
+%package -n gxmlviewer-bonobo
 Summary:   XML Viewer Bonobo Control
 Requires:  bonobo >= 0.36
 Group:     GNOME/Internet/Controls
 
-%description -n xmlview-control
+%description -n gxmlviewer-bonobo
 A Bonobo control for viewing XML files.
+
+%package extras
+Summary:   XML Viewer extra utilities
+Group:     Console/Utilities
+
+%description extras
+Some extra tools created by the gxmlviewer project such as xmlformatter.
+
+%package plugin
+Summary:   gxmlviewer plugin for netscape 4.7x
+Group:     Internet
+
+%description plugin
+Netscape 4.7x plugin for gxmlviewer.  Allows gxmlviewer to be launced within a netscape browser.
 
 %prep
 %setup
@@ -37,20 +51,25 @@ else
 fi
 
 %install
-rm -rf $RPM_BUILD_ROOT
+#rm -rf $RPM_BUILD_ROOT
 %makeinstall
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+#rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-, root, root)
 %{_prefix}/bin/gxmlviewer
-%{_prefix}/lib/netscape/plugins/npgxmlviewer.so
 
-%files -n xmlview-control
+%files -n gxmlviewer-bonobo
 %{_prefix}/bin/xmlview-control
 %{_prefix}/share/oaf/GNOME_XMLView.oaf
+
+%files extras
+%{_prefix}/bin/xmlformatter
+
+%files plugin
+%{_prefix}/lib/netscape/plugins/npgxmlviewer.so
 
 %changelog
 
