@@ -1,3 +1,7 @@
+/*
+ * $Id: xmlwindow.c,v 1.3 2001/11/20 02:02:54 sean_stuckless Exp $
+ */
+
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
 #endif

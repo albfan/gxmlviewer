@@ -1,3 +1,10 @@
+/*
+ * $Id: callbacks.h,v 1.5 2001/11/20 02:02:54 sean_stuckless Exp $
+ */
+
+#ifndef _CALLBACKS_H_
+#define _CALLBACKS_H_
+
 #include <gtk/gtk.h>
 
 
@@ -28,4 +35,4 @@ on_mainWin_drag_data_received          (GtkWidget       *widget,
                                         guint            time,
                                         gpointer         user_data);
 
-
+#endif

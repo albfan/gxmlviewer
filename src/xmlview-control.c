@@ -1,6 +1,14 @@
 /*
-* $Id: xmlview-control.c,v 1.6 2001/11/01 02:05:30 sean_stuckless Exp $
+* $Id: xmlview-control.c,v 1.7 2001/11/20 02:02:54 sean_stuckless Exp $
 */
+
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif
+
+#include <stdio.h>
+
+#ifdef HAVE_BONOBO
 
 #include "xmlview-control.h"
 #include <parser.h>
@@ -11,7 +19,6 @@
 #include "constants.h"
 #include "support.h"
 
-#include <stdio.h>
 #include <unistd.h>
 
 #define READ_CHUNK_SIZE 4096
@@ -34,10 +41,10 @@ xmlview_ps_load(BonoboPersistStream * ps,
 	return;
     }
 
-    g_message("about to create file");
+    DEBUG_CMD(g_message("about to create file"));
 
     tmpnam(tmpfile);
-    g_message("create tmp file");
+    DEBUG_CMD(g_message("create tmp file"));
     xmlfile = fopen(tmpfile, "w");
     if (xmlfile == NULL) {
         g_message("unable to open tmpfile for writing: [%s]", tmpfile);
@@ -45,13 +52,13 @@ xmlview_ps_load(BonoboPersistStream * ps,
     }
 
     do {
-	g_message("start bonobo prcoessing");
+	DEBUG_CMD(g_message("start bonobo prcoessing"));
 	Bonobo_Stream_read(stream, READ_CHUNK_SIZE, &buffer, ev);
 	if (ev->_major != CORBA_NO_EXCEPTION)
 	    break;
 	if (buffer->_length <= 0)
 	    break;
-        g_message("writing buffer to file");
+        DEBUG_CMD(g_message("writing buffer to file"));
 	fwrite(buffer->_buffer, buffer->_length, sizeof(char), xmlfile);
 
 	CORBA_free(buffer);
@@ -66,12 +73,12 @@ xmlview_ps_load(BonoboPersistStream * ps,
 	CORBA_free(buffer);
     }
 
-    g_message("about to show file");
+    DEBUG_CMD(g_message("about to show file"));
     show_xmlfile((const char*)tmpfile, tree);
-    g_message("file is displayed");
+    DEBUG_CMD(g_message("file is displayed"));
 
     unlink(tmpfile);
-    g_message("file is unlinked");
+    DEBUG_CMD(g_message("file is unlinked"));
     
 }
 
@@ -81,13 +88,13 @@ static Bonobo_Persist_ContentTypeList *xmlview_ps_types(BonoboPersistStream
 							CORBA_Environment *
 							ev)
 {
-    g_message("persist_content tyep list");
+    DEBUG_CMD(g_message("persist_content type list"));
     return bonobo_persist_generate_content_types(1, "text/xml");
 }
 
 static void control_destroy_cb(BonoboControl * control, gpointer data)
 {
-    g_message("control_destroy");
+    DEBUG_CMD(g_message("control_destroy"));
     bonobo_object_unref(BONOBO_OBJECT(data));
     if (--refcount < 1)
 	gtk_main_quit();
@@ -105,7 +112,7 @@ static BonoboObject *xmlview_factory(BonoboGenericFactory * factory,
     textdomain(PACKAGE);
 #endif
 
-    g_message("creating new window");
+    DEBUG_CMD(g_message("creating new window"));
 
     mainWin = xmlwindow_new(NULL);
 
@@ -139,7 +146,7 @@ static BonoboObject *xmlview_factory(BonoboGenericFactory * factory,
 
     refcount++;
 
-    g_message("returning a bonobo control");
+    DEBUG_CMD(g_message("returning a bonobo control"));
     return BONOBO_OBJECT(control);
 }
 
@@ -147,7 +154,7 @@ static gboolean xmlview_factory_init(void)
 {
     static BonoboGenericFactory *xmlfact = NULL;
 
-    g_message("xmlview_factory_init");
+    DEBUG_CMD(g_message("xmlview_factory_init"));
     
     if (!xmlfact) {
 	xmlfact =
@@ -159,12 +166,15 @@ static gboolean xmlview_factory_init(void)
     return FALSE;
 }
 
-int main(int argc, gchar ** argv)
+#endif
+
+int main(int argc, char ** argv)
 {
+#ifdef HAVE_BONOBO
     CORBA_Environment ev;
     CORBA_ORB orb;
 
-    g_message("main");
+    DEBUG_CMD(g_message("main"));
 
     CORBA_exception_init(&ev);
 
@@ -179,6 +189,9 @@ int main(int argc, gchar ** argv)
     gtk_idle_add((GtkFunction) xmlview_factory_init, NULL);
 
     bonobo_main();
-
+#else
+    printf("gxmlviewer bonobo control is not enabled.\n");
+#endif
     return 0;
 }
+

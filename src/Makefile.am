@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-SUBDIRS = nsplugin
+SUBDIRS = nsplugin extras 
 
 INCLUDES = \
 	-I$(top_srcdir)/intl \

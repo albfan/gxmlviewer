@@ -1,3 +1,7 @@
+/*
+ * $Id: callbacks.c,v 1.5 2001/11/20 02:02:54 sean_stuckless Exp $
+ */
+
 #ifdef HAVE_CONFIG_H
 #  include <config.h>
 #endif
@@ -8,6 +12,7 @@
 #include "support.h"
 #include "xmlparser.h"
 #include "constants.h"
+#include "callbacks.h"
 
 /*
  * used for file open dialog box 
@@ -45,7 +50,7 @@ void on_file_select_button_clicked(GtkButton * button, gpointer user_data)
             GtkWidget *xmltree = lookup_widget(GTK_WIDGET(gMainWindow),
                                                XMLTREE_WIDGET_NAME);
             if (xmltree != NULL) {
-                gtk_tree_clear_items(GTK_TREE(xmltree), 0, 2);
+                gtk_tree_clear_items(GTK_TREE(xmltree), 0, 99);
                 if (show_xmlfile(filename, xmltree)) {
                     /*
                      * unable to process file 
