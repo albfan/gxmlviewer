@@ -1,5 +1,5 @@
 /*
-* $Id: xmlview-control.c,v 1.3 2001/08/12 16:58:07 sean_stuckless Exp $
+* $Id: xmlview-control.c,v 1.4 2001/09/11 00:53:38 sean_stuckless Exp $
 */
 
 #include "xmlview-control.h"
@@ -17,8 +17,6 @@
 #define READ_CHUNK_SIZE 4096
 
 static gint refcount = 0;
-
-static char *RCSID="$Id: xmlview-control.c,v 1.3 2001/08/12 16:58:07 sean_stuckless Exp $";
 
 static void
 xmlview_ps_load(BonoboPersistStream * ps,
