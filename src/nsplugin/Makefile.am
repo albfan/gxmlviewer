@@ -1,5 +1,5 @@
 ## Process this file with automake to produce Makefile.in
-# $Id: Makefile.am,v 1.5 2001/08/13 02:18:22 sean_stuckless Exp $
+# $Id: Makefile.am,v 1.6 2001/08/15 01:57:51 sean_stuckless Exp $
 
 SUBDIRS = common
 
@@ -22,9 +22,10 @@ npgxmlviewer_so_LDADD = $(GNOME_LIBDIR) $(GNOMEUI_LIBS) $(INTLLIBS)
 
 npgxmlviewer_so_LDFLAGS = -shared
 
-PLUGIN_DIR=/usr/lib/netscape/plugins
+PLUGIN_DIR=$(libdir)/netscape/plugins
 
 install-exec-local: $(bin_PROGRAMS)
+	@$(mkinstalldirs) $(DESTDIR)$(PLUGIN_DIR)
 	@if test -d $(DESTDIR)$(PLUGIN_DIR) ; then \
 	  echo "Installing Netscape Pluggin in $(DESTDIR)$(PLUGIN_DIR)" ; \
 	  echo rm -f $(DESTDIR)$(bindir)/$(bin_PROGRAMS) ; \
