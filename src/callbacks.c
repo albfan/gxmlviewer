@@ -22,6 +22,13 @@ on_open1_activate                      (GtkMenuItem     *menuitem,
    gtk_widget_show(fileDialog);
 }
 
+void
+on_file_select_cancel_button_clicked          (GtkButton       *button,
+                                        gpointer         user_data)
+{
+   GtkWidget *fileDialog = lookup_widget(GTK_WIDGET(button), FILE_SELECTION);
+   gtk_widget_destroy(fileDialog);
+}
 
 /* when the ok button is clicked in the file open dialog */
 void

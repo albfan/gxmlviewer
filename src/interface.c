@@ -166,7 +166,7 @@ create_fileselection (void)
                       GTK_SIGNAL_FUNC (on_file_select_button_clicked),
                       NULL);
   gtk_signal_connect (GTK_OBJECT (cancel_button1), "clicked",
-                      GTK_SIGNAL_FUNC (gtk_widget_destroy),
+                      GTK_SIGNAL_FUNC (on_file_select_cancel_button_clicked),
                       NULL);
 
   return fileselection;

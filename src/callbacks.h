@@ -10,10 +10,9 @@ on_file_select_button_clicked          (GtkButton       *button,
                                         gpointer         user_data);
 
 void
-on_file_select_button_clicked          (GtkButton       *button,
+on_about1_activate                     (GtkMenuItem     *menuitem,
                                         gpointer         user_data);
 
-
 void
-on_about1_activate                     (GtkMenuItem     *menuitem,
+on_file_select_cancel_button_clicked          (GtkButton       *button,
                                         gpointer         user_data);
