@@ -7,7 +7,12 @@
 #  include <config.h>
 #endif
 
+#ifdef NEED_GNOMESUPPORT_H
 #include <gnome.h>
+#else
+#include <gtk/gtk.h>
+#include <string.h>
+#endif
 
 #include "interface.h"
 #include "support.h"
@@ -29,7 +34,11 @@ main (int argc, char *argv[])
   textdomain (PACKAGE);
 #endif
 
+#ifdef NEED_GNOMESUPPORT_H
   gnome_init ("gxmlviewer", VERSION, argc, argv);
+#else
+  gtk_init(&argc, &argv);
+#endif
 
   /* create the main display */
   mainWin = create_mainWin ();

@@ -6,7 +6,8 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <string.h>
-#include <gnome.h>
+
+#include <gtk/gtk.h>
 
 #include "constants.h"
 #include "xmlwindow.h"

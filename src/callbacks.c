@@ -2,12 +2,10 @@
 #  include <config.h>
 #endif
 
-#include <gnome.h>
+#include <gtk/gtk.h>
 
-#include "callbacks.h"
 #include "interface.h"
 #include "support.h"
-
 #include "xmlparser.h"
 #include "constants.h"
 
@@ -39,7 +37,7 @@ on_file_select_button_clicked          (GtkButton       *button,
    if (fileDialog != NULL) {
       const gchar *filename = gtk_file_selection_get_filename(GTK_FILE_SELECTION(fileDialog));
       if (filename == NULL) {
-         printf("file is null!!\n");
+	g_message("file is null!!");
       } else {
          GtkWidget *xmltree = lookup_widget(GTK_WIDGET(gMainWindow), XMLTREE_WIDGET_NAME);
          if (xmltree != NULL) {
@@ -49,7 +47,7 @@ on_file_select_button_clicked          (GtkButton       *button,
             }
          }
          else {
-            printf("xmltree is null!!\n");
+	   g_message("xmltree is null!!");
          }
       }
    }

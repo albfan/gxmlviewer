@@ -24,23 +24,24 @@ AM_GNU_GETTEXT
 dnl ******************************
 dnl libxml checking 
 dnl ******************************
-AC_MSG_CHECKING(for libxml  >= 1.8.12)
-if gnome-config --libs xml > /dev/null 2>&1; then
-    vers=`gnome-config --modversion xml | sed -e "s/xml-//" -e 's/cvs$//' -e 's/pre$//' | \
+AC_MSG_CHECKING(for libxml  >= 2.3.4)
+if xml2-config --libs > /dev/null 2>&1; then
+    vers=`xml2-config --version | sed -e "s/xml-//" -e 's/cvs$//' -e 's/pre$//' | \
         awk 'BEGIN { FS = "."; } { print $3;}'`
-    if test "$vers" -ge 10; then
+    if test "$vers" -ge 4; then
         AC_MSG_RESULT([found ("$vers")])
-	XML_CFLAGS="`gnome-config --cflags xml`"
-	XML_LIBS="`gnome-config --libs xml`"
+	XML_CFLAGS="`xml2-config --cflags`"
+	XML_LIBS="`xml2-config --libs`"
 	AC_SUBST(XML_CFLAGS)
 	AC_SUBST(XML_LIBS)
     else
   AC_MSG_RESULT([found ("$vers")])
-        AC_MSG_ERROR(You need at least libxml 1.8.12 for this version of the GNOME XML Viewer)
+        AC_MSG_ERROR(You need at least libxml 2.3.4 for this version of the GNOME XML Viewer)
     fi
 else
     AC_MSG_ERROR(Did not find libxml installed)
 fi
+
 
 dnl Bonobo checks.
 
