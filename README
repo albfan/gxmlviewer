@@ -1,4 +1,4 @@
-gXMLViewer is a xml viewer that uses gtk.  Basically it will parse an xml file using the sax interface of libxml and build a GtkTree of the various nodes.  Whenthe tree is presented it will look like the xml source, but each node will be collapable.  (This is like the built in xml-viewer that Internet Explorer uses)
+gxmlviewer is a xml viewer that uses gtk.  Basically it will parse an xml file using the sax interface of libxml and build a GtkTree of the various nodes.  Whenthe tree is presented it will look like the xml source, but each node will be collapable.  (This is like the built in xml-viewer that Internet Explorer uses)
 
 I built this viewer because Linux lacks a good xml viewer.  In my development I deal with xml files alot and I like to see them in their source view, but I also want to be able to collapse nodes that I do not want to see.
 
