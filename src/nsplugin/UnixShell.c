@@ -13,6 +13,10 @@
 * > Caolan McNamara <caolan@skynet.ie>
 */
 
+#ifdef HAVE_CONFIG_H
+#  include <config.h>
+#endif
+
 #include <stdio.h>
 #include "npapi.h"
 #include <sys/types.h>
@@ -34,7 +38,7 @@
 #define REPARENT_LOOPS 50
 
 #define MIME_DESCRIPTION "text/xml:xml:text/xml"
-#define NAME             "npgxmlviewer 1.2"
+#define NAME             ("npgxmlviewer " VERSION)
 #define PURPOSE          "gxmlviewer was written by <a href=\"http://members.home.net/sstuckless/index.html\">Sean Stuckless</a> &lt;<a href=\"mailto:sstuckless@home.com\">sstuckless@home.com</a>&gt;.  For more information on gxmlviewer go to <a href=\"http://www.sourceforge.net/projects/gxmlviewer/\">gxmlviewer project homepage</a>."
 
 int abortflag;

@@ -1,6 +1,6 @@
 # Note that this is NOT a relocatable package
 %define ver      @VERSION@
-%define rel      3
+%define rel      0
 
 Summary:   GTK+ XML Viewer
 Name:      gxmlviewer
