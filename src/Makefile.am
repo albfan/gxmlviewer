@@ -5,6 +5,7 @@ SUBDIRS = nsplugin extras
 INCLUDES = \
 	-I$(top_srcdir)/intl \
         $(XML_CFLAGS) \
+	$(GTK_CFLAGS) \
 	$(GNOME_INCLUDEDIR) \
 	$(BONOBO_CFLAGS)
 
@@ -19,7 +20,7 @@ gxmlviewer_SOURCES = \
         xmlparser.c xmlparser.h \
 	xmlwindow.c xmlwindow.h
 
-gxmlviewer_LDADD = $(GNOME_LIBDIR) $(GNOMEUI_LIBS) $(INTLLIBS) $(XML_LIBS)
+gxmlviewer_LDADD = $(GTK_LIBS) $(GNOME_LIBDIR) $(GNOMEUI_LIBS) $(INTLLIBS) $(XML_LIBS)
 
 xmlview_control_SOURCES = \
 	xmlview-control.c \
@@ -32,6 +33,7 @@ xmlview_control_SOURCES = \
 	xmlwindow.h
 
 xmlview_control_LDADD = \
+	$(GTK_LIBS) \
 	$(GNOME_LIBDIR) $(GNOMEUI_LIBS) $(INTLLIBS) \
 	$(XML_LIBS) $(BONOBO_LIBS)
 

@@ -1,5 +1,5 @@
 /*
- * $Id: main.c,v 1.4 2001/11/20 02:02:54 sean_stuckless Exp $
+ * $Id: main.c,v 1.5 2001/11/29 01:28:46 sean_stuckless Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -11,6 +11,11 @@
 #else
 #include <gtk/gtk.h>
 #include <string.h>
+#endif
+
+
+#ifdef WIN32
+#include <windows.h>
 #endif
 
 #include "interface.h"
@@ -25,6 +30,7 @@ GtkWidget *gMainWindow;
 int
 main (int argc, char *argv[])
 {
+   
   GtkWidget *mainWin;
   char *filename = argv[1];
  
@@ -41,6 +47,10 @@ main (int argc, char *argv[])
   gnome_init ("gxmlviewer", VERSION, argc, argv);
 #else
   gtk_init(&argc, &argv);
+#endif
+
+#if defined WIN32 && NDEBUG
+  FreeConsole();
 #endif
 
   /* create the main display */
@@ -77,3 +87,13 @@ main (int argc, char *argv[])
   return 0;
 }
 
+#if defined WIN32 && _WINDOWS
+int _stdcall
+WinMain (struct HINSTANCE__ *hInstance,
+	 struct HINSTANCE__ *hPrevInstance,
+	 char               *lpszCmdLine,
+	 int                 nCmdShow)
+{
+  return main (__argc, __argv);
+}
+#endif

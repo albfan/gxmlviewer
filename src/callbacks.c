@@ -1,5 +1,5 @@
 /*
- * $Id: callbacks.c,v 1.5 2001/11/20 02:02:54 sean_stuckless Exp $
+ * $Id: callbacks.c,v 1.6 2001/11/29 01:28:46 sean_stuckless Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -7,6 +7,7 @@
 #endif
 
 #include <gtk/gtk.h>
+#include <string.h>
 
 #include "interface.h"
 #include "support.h"
@@ -111,7 +112,7 @@ on_mainWin_drag_data_received(GtkWidget * widget,
     g_message("Parsed  Filename: [%s]\n", fn);
 
     if ((data->length >= 0) && (data->format == 8)) {
-        gtk_tree_clear_items(GTK_TREE(xmltree), 0, 2);
+        gtk_tree_clear_items(GTK_TREE(xmltree), 0, 99);
         show_xmlfile(fn, xmltree);
         gtk_drag_finish(drag_context, TRUE, FALSE, time);
         return;

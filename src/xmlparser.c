@@ -1,5 +1,5 @@
 /*
- * $Id: xmlparser.c,v 1.4 2001/11/20 02:02:54 sean_stuckless Exp $
+ * $Id: xmlparser.c,v 1.5 2001/11/29 01:28:46 sean_stuckless Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -8,10 +8,15 @@
 
 #include <string.h>
 #include <gtk/gtk.h>
+#ifndef WIN32
 #include <SAX.h>
 #include <parser.h>
 #include <parserInternals.h>
-
+#else
+#include <libxml/SAX.h>
+#include <libxml/parser.h>
+#include <libxml/parserInternals.h>
+#endif
 #include "xmlparser.h"
 #include "support.h"
 
@@ -68,7 +73,7 @@ inline void setState(AppParseState * state, int stateValue);
 inline GtkStyle *createStyle(GdkColor forecolor);
 inline GdkColor createColor(int red, int green, int blue);
 inline GtkWidget *createTextContainer(void);
-inline void addColorText(AppParseState * state, GtkStyle * color, char *strText);
+inline void addColorText(AppParseState * state, GtkStyle * color, const char *strText);
 inline void addErrorText(AppParseState * state, char *strText);
 inline GtkWidget *getCurrentTextContainer(AppParseState * state);
 void gxmlviewer_init(AppParseState *state, GtkTree *parent);
@@ -147,16 +152,27 @@ inline void addStartNode(AppParseState * state)
 /* add a end element node (close an indentation)*/
 inline void addEndNode(AppParseState * state)
 {
-    GtkWidget *treeItem = NULL;
+  GtkWidget *treeItem = NULL;
+  GtkObject *treeItemObj = NULL;
 
-    DEBUG_CMD(g_message("adding end tag."));
+  DEBUG_CMD(g_message("adding end tag."));
 
-    state->tree = GTK_WIDGET(state->tree->parent);
-    treeItem = gtk_tree_item_new();
-    gtk_container_add(GTK_CONTAINER(treeItem), state->end_tag);
-    gtk_tree_append(GTK_TREE(state->tree), treeItem);
-    gtk_widget_show(treeItem);
-    gtk_widget_show(state->end_tag);
+  treeItemObj = GTK_OBJECT(GTK_TREE(state->tree)->tree_owner);
+
+  state->tree = GTK_WIDGET(state->tree->parent);
+  treeItem = gtk_tree_item_new();
+  gtk_container_add(GTK_CONTAINER(treeItem), state->end_tag);
+  gtk_tree_append(GTK_TREE(state->tree), treeItem);
+  gtk_widget_show(treeItem);
+
+  /* Show or hide closing tag */
+  gtk_signal_connect_object(GTK_OBJECT(treeItemObj),
+			    "collapse", gtk_widget_hide,
+			    GTK_OBJECT(state->end_tag));
+  gtk_signal_connect_object(GTK_OBJECT(treeItemObj),
+			    "expand", gtk_widget_show,
+			    GTK_OBJECT(state->end_tag));
+  
 }
 
 /* general add node method.  It will figure out what type of node to add
@@ -164,6 +180,7 @@ inline void addEndNode(AppParseState * state)
 inline void addNode(AppParseState * state)
 {
     GtkWidget *treeItem = NULL;
+    GList *list;
 
     if (state->state == STATE_UNKNOWN) {
 	DEBUG_CMD(g_message("gxmlviewer_add_node(): state == UNKNOWN, node not added."));
@@ -190,8 +207,12 @@ inline void addNode(AppParseState * state)
 	treeItem = gtk_tree_item_new();
 	if (state->body_text == NULL) {
 	    DEBUG_CMD(g_message("no text so will compress the nodes"));
-	    gtk_box_pack_start(GTK_BOX(state->start_tag),
-			       GTK_WIDGET(state->end_tag), FALSE, FALSE, 0);
+	    gtk_widget_destroy(GTK_WIDGET(state->end_tag));
+	    /* get last box, and modify this */
+	    list = gtk_container_children(GTK_CONTAINER(state->start_tag));
+	    gtk_label_set_text(GTK_LABEL( g_list_last(list)->data), " />");
+	    g_list_free(list);
+
 	    gtk_container_add(GTK_CONTAINER(treeItem),
 			      GTK_WIDGET(state->start_tag));
 	    gtk_tree_append(GTK_TREE(state->tree), treeItem);
@@ -200,11 +221,8 @@ inline void addNode(AppParseState * state)
 	    gtk_widget_show(state->end_tag);
 	} else {
 	    DEBUG_CMD(g_message("Added text before the end node"));
-	    if (state->body_text != NULL) {
-		gtk_box_pack_start(GTK_BOX(state->start_tag),
-				   GTK_WIDGET(state->body_text), FALSE, FALSE,
-				   0);
-	    }
+	    gtk_box_pack_start(GTK_BOX(state->start_tag),
+			       GTK_WIDGET(state->body_text), FALSE, FALSE, 0);
 	    gtk_box_pack_start(GTK_BOX(state->start_tag),
 			       GTK_WIDGET(state->end_tag), FALSE, FALSE, 0);
 	    gtk_container_add(GTK_CONTAINER(treeItem),
@@ -267,7 +285,7 @@ inline GtkWidget *createTextContainer(void)
 }
 
 /* adds colored text to a text container */
-inline void addColorText(AppParseState * state, GtkStyle * color, char *strText)
+inline void addColorText(AppParseState * state, GtkStyle * color, const char *strText)
 {
     GtkWidget *textBox = getCurrentTextContainer(state);
     GtkWidget *text = gtk_label_new(strText);
@@ -395,72 +413,103 @@ static void handleCharacters(AppParseState * state, char *data, int len)
 
 static void handleCdataBlock(AppParseState * state, char *data, int len)
 {
-    gchar *buf = g_strndup(data, len);
-    g_strstrip(buf);
-    DEBUG_CMD(g_message("adding cdata [%s]", buf));
-    if (strstr(buf, "\n") != NULL) {
-	DEBUG_CMD(g_message("adding a multiline CDATA"));
-	addNode(state);
-	setState(state, STATE_STARTTAG);
-	addColorText(state, state->style_cdata, "<![CDATA[");
-	addNode(state);
+   GList *list = NULL;
+   GtkObject *treeItem = NULL;
+   GtkObject *labelEnd = NULL;
 
-	setState(state, STATE_TEXT);
-	addColorText(state, state->style_text, buf);
+   gchar *buf = g_strndup(data, len);
+   //g_strstrip(buf);
+   DEBUG_CMD(g_message("adding cdata [%s]", buf));
+   addNode(state);
+   if (strstr(buf, "\n") != NULL) {
+      DEBUG_CMD(g_message("adding a multiline CDATA"));
+      setState(state, STATE_STARTTAG);
+      addColorText(state, state->style_cdata, "<![CDATA[");
+      addColorText(state, state->style_cdata, "    ]]>");
 
-	setState(state, STATE_ENDTAG);
-	addColorText(state, state->style_cdata, "]]>");
-	addNode(state);
-    } else {
-	DEBUG_CMD(g_message("adding single cdata to text node"));
-	setState(state, STATE_TEXT);
-	addColorText(state, state->style_cdata, "<![CDATA[");
-	addColorText(state, state->style_text, buf);
-	addColorText(state, state->style_cdata, "]]>");
-    }
-    g_free(buf);
+      /* get last box */
+      list = gtk_container_children(GTK_CONTAINER(state->start_tag));
+      labelEnd = GTK_OBJECT(g_list_last(list)->data);
+      g_list_free(list);
+
+      addNode(state);
+
+      /* show or hide last box */
+      treeItem = GTK_OBJECT(GTK_TREE(state->tree)->tree_owner);
+      gtk_signal_connect_object(treeItem, "collapse", gtk_widget_show, labelEnd);
+      gtk_signal_connect_object(treeItem, "expand",   gtk_widget_hide, labelEnd);
+ 
+      setState(state, STATE_TEXT);
+      addColorText(state, state->style_text, buf);
+      
+      setState(state, STATE_ENDTAG);
+      addColorText(state, state->style_cdata, "]]>");
+   } else {
+      DEBUG_CMD(g_message("adding single cdata to text node"));
+      setState(state, STATE_TEXT);
+      addColorText(state, state->style_cdata, "<![CDATA[");
+      addColorText(state, state->style_text, buf);
+      addColorText(state, state->style_cdata, "]]>");
+   }
+   addNode(state);
+   g_free(buf);
 }
 
 static void handleComment(AppParseState * state, char *data)
 {
-    gchar *buf = g_strdup(data);
-    buf = g_strstrip(buf);
-    DEBUG_CMD(g_message("adding comment [%s]", buf));
-    if (strstr(buf, "\n") != NULL) {
-	DEBUG_CMD(g_message("adding a multiline comment"));
-	addNode(state);
-	setState(state, STATE_STARTTAG);
-	addColorText(state, state->style_comment, "<!--");
-	addNode(state);
+   GList *list = NULL;
+   GtkObject *treeItem = NULL;
+   GtkObject *labelEnd = NULL;
 
-	setState(state, STATE_TEXT);
-	addColorText(state, state->style_comment, buf);
+   gchar *buf = g_strdup(data);
+   buf = g_strstrip(buf);
+   DEBUG_CMD(g_message("adding comment [%s]", buf));
+   addNode(state);
+   if (strstr(buf, "\n") != NULL) {
+      DEBUG_CMD(g_message("adding a multiline comment"));
+      setState(state, STATE_STARTTAG);
+      addColorText(state, state->style_comment, "<!--");
+      addColorText(state, state->style_comment, "    -->");
 
-	setState(state, STATE_ENDTAG);
-	addColorText(state, state->style_comment, "-->");
-	addNode(state);
-    } else {
-	if (state->body_text != NULL) {
-	    DEBUG_CMD(g_message("adding single comment to text node"));
-	    setState(state, STATE_TEXT);
-	    addColorText(state, state->style_comment, "<!-- ");
-	    addColorText(state, state->style_comment, buf);
-	    addColorText(state, state->style_comment, " -->");
-	} else {
-	    DEBUG_CMD(g_message("adding single comment node"));
-	    addNode(state);
-	    setState(state, STATE_STARTTAG);
-	    addColorText(state, state->style_comment, "<!-- ");
+      /* get last box */
+      list = gtk_container_children(GTK_CONTAINER(state->start_tag));
+      labelEnd = GTK_OBJECT(g_list_last(list)->data);
+      g_list_free(list);
 
-	    setState(state, STATE_TEXT);
-	    addColorText(state, state->style_comment, buf);
+      addNode(state);
 
-	    setState(state, STATE_ENDTAG);
-	    addColorText(state, state->style_comment, " -->");
-	    addNode(state);
-	}
-    }
-    g_free(buf);
+      /* show or hide last box */
+      treeItem = GTK_OBJECT(GTK_TREE(state->tree)->tree_owner);
+      gtk_signal_connect_object(treeItem, "collapse", gtk_widget_show, labelEnd);
+      gtk_signal_connect_object(treeItem, "expand",   gtk_widget_hide, labelEnd);
+           
+      setState(state, STATE_TEXT);
+      addColorText(state, state->style_comment, buf);
+      
+      setState(state, STATE_ENDTAG);
+      addColorText(state, state->style_comment, "-->");
+   } else {
+      if (state->body_text != NULL) {
+         DEBUG_CMD(g_message("adding single comment to text node"));
+         setState(state, STATE_TEXT);
+         addColorText(state, state->style_comment, "<!-- ");
+         addColorText(state, state->style_comment, buf);
+         addColorText(state, state->style_comment, " -->");
+      } else {
+         DEBUG_CMD(g_message("adding single comment node"));
+         addNode(state);
+         setState(state, STATE_STARTTAG);
+         addColorText(state, state->style_comment, "<!-- ");
+         
+         setState(state, STATE_TEXT);
+         addColorText(state, state->style_comment, buf);
+         
+         setState(state, STATE_ENDTAG);
+         addColorText(state, state->style_comment, " -->");
+      }
+   }
+   addNode(state);
+   g_free(buf);
 }
 
 static void handleDTD(AppParseState * state, char *name, char *publicId,
@@ -508,6 +557,40 @@ void gxmlviewer_init(AppParseState *state, GtkTree *parent) {
    forgetNode(state);
 }
 
+void show_xmlheader(AppParseState *state, const xmlParserCtxtPtr ctxt)
+{
+  char buf[1024];
+  GtkWidget *treeItem = NULL;
+  *buf = 0;
+ 
+  setState(state, STATE_TEXT);
+
+  addColorText(state, state->style_tag, "<?xml");
+
+  if (ctxt->version != NULL)
+    {
+      addColorText(state, state->style_attr, " version=");
+      addColorText(state, state->style_quoted_text, "\"");
+      addColorText(state, state->style_quoted_text, ctxt->version);
+      addColorText(state, state->style_quoted_text, "\"");
+    }
+  if (ctxt->input->encoding != NULL)
+    {
+      addColorText(state, state->style_attr, " encoding=");
+      addColorText(state, state->style_quoted_text, "\"");
+      addColorText(state, state->style_quoted_text, ctxt->input->encoding);
+      addColorText(state, state->style_quoted_text, "\"");
+    }
+  addColorText(state, state->style_tag, " ?>");
+ 
+  treeItem = gtk_tree_item_new();
+  gtk_tree_prepend(GTK_TREE(state->tree), treeItem);
+  gtk_container_add(GTK_CONTAINER(treeItem), state->body_text);
+  gtk_widget_show(state->body_text);
+  gtk_widget_show(treeItem);
+  state->body_text = NULL;
+}
+
 /* show the parsed xml file in a tree */
 int show_xmlfile(const char *filename, GtkWidget * tree)
 {
@@ -525,6 +608,7 @@ int show_xmlfile(const char *filename, GtkWidget * tree)
 	strBuf = g_strdup_printf("Unable to parse xml file: [%s]. The filename may not exist.", fileName);
 	errNo = 1;
     }
+
     if (errNo == 0) {
 	ctxt->sax = &appSAXParser;
 	ctxt->userData = &state;
@@ -535,6 +619,9 @@ int show_xmlfile(const char *filename, GtkWidget * tree)
 	    strBuf = g_strdup_printf("Parse error in XML file: [%s]",fileName);
 	    errNo = 2;
 	}
+
+	show_xmlheader(&state, ctxt);
+
 	ctxt->sax = NULL;
 	xmlFreeParserCtxt(ctxt);
     }

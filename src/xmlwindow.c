@@ -1,5 +1,5 @@
 /*
- * $Id: xmlwindow.c,v 1.3 2001/11/20 02:02:54 sean_stuckless Exp $
+ * $Id: xmlwindow.c,v 1.4 2001/11/29 01:28:46 sean_stuckless Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -8,7 +8,9 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
 #include <string.h>
 
 #include <gtk/gtk.h>

@@ -1,5 +1,5 @@
 /*
- * $Id: support.c,v 1.3 2001/11/20 02:02:54 sean_stuckless Exp $
+ * $Id: support.c,v 1.4 2001/11/29 01:28:46 sean_stuckless Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -236,7 +236,11 @@ check_file_exists                      (const gchar     *directory,
   strcat (full_filename, filename);
 
   status = stat (full_filename, &s);
+#ifndef WIN32
   if (status == 0 && S_ISREG (s.st_mode))
+#else
+   if (status == 0 && s.st_mode == _S_IFREG)
+#endif
     return full_filename;
   g_free (full_filename);
   return NULL;
