@@ -28,6 +28,10 @@ main (int argc, char *argv[])
 {
   GtkWidget *mainWin;
   char *filename = argv[1];
+ 
+  GtkTargetEntry target_entry[] = {
+		{"text/uri-list", 0, 1},
+	};
 
 #ifdef ENABLE_NLS
   bindtextdomain (PACKAGE, PACKAGE_LOCALE_DIR);
@@ -44,6 +48,15 @@ main (int argc, char *argv[])
   mainWin = create_mainWin ();
   gtk_window_set_title(GTK_WINDOW(mainWin), GXMLVIEWER_TITLE);
   gMainWindow = mainWin;
+
+  /* dnd support */
+
+  gtk_drag_dest_set(
+                mainWin,
+                GTK_DEST_DEFAULT_ALL,
+                target_entry,sizeof(target_entry) / sizeof(*target_entry),
+                GDK_ACTION_COPY | GDK_ACTION_MOVE   
+        			 );
 
   /* check for swallowed parameter. if it exists then remove the menu */
   if (argc > 1 && strcmp(argv[1],"swallowed") == 0) {

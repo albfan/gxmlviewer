@@ -155,7 +155,9 @@ create_mainWin (void)
   gtk_signal_connect (GTK_OBJECT (mainWin), "destroy_event",
                       GTK_SIGNAL_FUNC (gtk_main_quit),
                       NULL);
-
+  gtk_signal_connect (GTK_OBJECT (mainWin), "drag_data_received",
+                      GTK_SIGNAL_FUNC (on_mainWin_drag_data_received),
+                      NULL);
   return mainWin;
 }
 

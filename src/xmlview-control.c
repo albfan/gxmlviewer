@@ -1,5 +1,5 @@
 /*
-* $Id: xmlview-control.c,v 1.4 2001/09/11 00:53:38 sean_stuckless Exp $
+* $Id: xmlview-control.c,v 1.5 2001/11/01 01:47:42 sean_stuckless Exp $
 */
 
 #include "xmlview-control.h"
@@ -34,19 +34,24 @@ xmlview_ps_load(BonoboPersistStream * ps,
 	return;
     }
 
+    g_message("about to create file");
+
     tmpnam(tmpfile);
+    g_message("create tmp file");
     xmlfile = fopen(tmpfile, "w");
     if (xmlfile == NULL) {
+        g_message("unable to open tmpfile for writing: [%s]", tmpfile);
 	return;
     }
 
     do {
+	g_message("start bonobo prcoessing");
 	Bonobo_Stream_read(stream, READ_CHUNK_SIZE, &buffer, ev);
 	if (ev->_major != CORBA_NO_EXCEPTION)
 	    break;
 	if (buffer->_length <= 0)
 	    break;
-
+        g_message("writing buffer to file");
 	fwrite(buffer->_buffer, buffer->_length, sizeof(char), xmlfile);
 
 	CORBA_free(buffer);
@@ -61,9 +66,13 @@ xmlview_ps_load(BonoboPersistStream * ps,
 	CORBA_free(buffer);
     }
 
+    g_message("about to show file");
     show_xmlfile((const char*)tmpfile, tree);
+    g_message("file is displayed");
 
     unlink(tmpfile);
+    g_message("file is unlinked");
+    
 }
 
 static Bonobo_Persist_ContentTypeList *xmlview_ps_types(BonoboPersistStream
@@ -72,11 +81,13 @@ static Bonobo_Persist_ContentTypeList *xmlview_ps_types(BonoboPersistStream
 							CORBA_Environment *
 							ev)
 {
+    g_message("persist_content tyep list");
     return bonobo_persist_generate_content_types(1, "text/xml");
 }
 
 static void control_destroy_cb(BonoboControl * control, gpointer data)
 {
+    g_message("control_destroy");
     bonobo_object_unref(BONOBO_OBJECT(data));
     if (--refcount < 1)
 	gtk_main_quit();
@@ -94,16 +105,23 @@ static BonoboObject *xmlview_factory(BonoboGenericFactory * factory,
     textdomain(PACKAGE);
 #endif
 
+    g_message("creating new window");
+
     mainWin = xmlwindow_new(NULL);
 
+    if (mainWin == NULL) {
+       g_error("unable to create the xml window");
+    }
+
     /* show the main window */
-    gtk_widget_show(mainWin);
+    //gtk_widget_show(mainWin);
 
     control = bonobo_control_new(mainWin);
 
     bonobo_control_set_automerge(control, TRUE);
 
     if (!control) {
+	g_error("unable to create the bonobo control");
 	gtk_object_destroy(GTK_OBJECT(mainWin));
 	return NULL;
     }
@@ -121,6 +139,7 @@ static BonoboObject *xmlview_factory(BonoboGenericFactory * factory,
 
     refcount++;
 
+    g_message("returning a bonobo control");
     return BONOBO_OBJECT(control);
 }
 
@@ -128,6 +147,8 @@ static gboolean xmlview_factory_init(void)
 {
     static BonoboGenericFactory *xmlfact = NULL;
 
+    g_message("xmlview_factory_init");
+    
     if (!xmlfact) {
 	xmlfact =
 	    bonobo_generic_factory_new("OAFIID:GNOME_XMLView_Factory",
@@ -142,6 +163,8 @@ int main(int argc, gchar ** argv)
 {
     CORBA_Environment ev;
     CORBA_ORB orb;
+
+    g_message("main");
 
     CORBA_exception_init(&ev);
 

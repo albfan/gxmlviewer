@@ -1,3 +1,9 @@
+	gxmlviewer readme
+
+	1. Overview
+	2. Installation Problems/Solutions
+
+1. Overview
 gxmlviewer is a xml viewer that uses gtk.  Basically it will parse an xml file using the sax interface of libxml and build a GtkTree of the various nodes.  Whenthe tree is presented it will look like the xml source, but each node will be collapable.  (This is like the built in xml-viewer that Internet Explorer uses)
 
 I built this viewer because Linux lacks a good xml viewer.  In my development I deal with xml files alot and I like to see them in their source view, but I also want to be able to collapse nodes that I do not want to see.
@@ -15,6 +21,17 @@ In the future I would like to add support for colorizing the xml display.  Curre
 I'll answer this question now, because some of you are going to ask..
 Why gtk??
 I used the gtk libararies because I also use gnome as my desktop.  gtk is well documentent and using thier library meant that I didn't need to write any additional code to create a collapsable tree.  Gtk is cool.
+
+
+
+2. Installation Problems/Solutions...
+if libxml cannot be found then install the libxml2-devel package
+  rpm -Uhv libxml2-devel-2.4.2-1.i386.rpm
+
+if the xmlview-control fails to compile it probably needed the gnome-print package installed
+  rpm -Uhv gnome-print-devel-0.29-6.i386.rpm
+
+
 
 Sean Stuckless <sstuckless@home.com>
 

@@ -1,3 +1,10 @@
+2001-10-31  Sean Stuckless <sstuckless@home.com>
+	* applied diff from Nicholas Marshall <nmarshall@radserver1.2rad.net>
+        * diff gave dnd support which worked with Rox filer.
+	* modified dnd code to account for Rox with/without hostname in the dnd filename and to support nautilus style dnd.
+	* started to replace some of the stdc calls with glibc calls.
+	* modified configure.in to look for libxml1 if libxml2 was not found.
+
 2001-09-10  Sean Stuckless <sstuckless@home.com>
 	* applied diff from Samuel Vinson <vinson@idp.fr>
 <cut from email>.
