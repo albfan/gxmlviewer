@@ -122,6 +122,7 @@ AC_SUBST(PACKAGE_PIXMAPS_DIR)
 
 AC_OUTPUT([
 Makefile
+gxmlviewer.spec
 macros/Makefile
 src/Makefile
 src/GNOME_XMLView.oaf
