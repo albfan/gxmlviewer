@@ -1,3 +1,24 @@
+2001-09-10  Sean Stuckless <sstuckless@home.com>
+	* applied diff from Samuel Vinson <vinson@idp.fr>
+<cut from email>.
+	I send to you gxmlviewer-1.2.0 patch. With it, 
+       	- CDATA and comment display
+        - texts like <tag>ff<other>fsdh</other>dd</tag> display correctly, without patch ff and dd text don't display
+        - empty tags display like <tag />
+        - glib functions replace glibc functions (malloc->g_malloc,...)
+</cut from email>
+	* almost all .c and .h files were affected in some way.
+	* I compiled/tested/verified the changes.
+        
+
+2001-09-10  Sean Stuckles <sstuckless@home.com>
+	* README: Fixed typo in name.
+	* AUTHORS: Added authors.
+	* samples/edi840sample.xml: Added Sample
+	* src/xmlview-control.c: removed RCSID
+	* src/xmlparser.c: prefixed startDocument/endDocument with "handle"
+	
+
 2001-08-05  Sean Stuckless <sstuckless@home.com>
 	* src/xmlwindow.[ch]: Added files
 	* src/xmlcontrol.c: remove sax code
