@@ -8,6 +8,7 @@ struct _AppParseState {
    char *startTag;   /* buffer for start tag */
    char *text;       /* buffer for text */
    char *endTag;     /* buffer to end tag */
+	 char *buffer;
    char *pstart;     /* pointer to start tag */
    char *pend;       /* pointer to end tag */
    char *ptext;      /* pointer to text */

@@ -5,6 +5,7 @@
 	* src/Makefile.am: Added bonobo stuff
 	* configure.in: Added bonobo check, oaf file generation, and up version
 	* acconfig.h: Updated to include appropriate defines
+	* */*: Made make distcheck happy
 	
 june 23, 2001 - initial revision with netscape plugin.
 

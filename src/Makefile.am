@@ -11,7 +11,8 @@ INCLUDES = \
 bin_PROGRAMS = gxmlviewer xmlview-control
 
 gxmlviewer_SOURCES = \
-	main.c \
+	gxmlviewer.h \
+	main.c constants.h \
 	support.c support.h \
 	interface.c interface.h \
 	callbacks.c callbacks.h \
