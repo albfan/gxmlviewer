@@ -200,7 +200,7 @@ create_aboutBox (void)
   GtkWidget *aboutBox;
 
 #ifdef NEED_GNOMESUPPORT_H
-  aboutBox = gnome_about_new ("gXMLviewer", VERSION,
+  aboutBox = gnome_about_new ("gxmlviewer", VERSION,
                         "",
                         authors,
                         _("xmlviewer for gnome."),
@@ -231,7 +231,7 @@ create_aboutBox (void)
   gtk_widget_show (fixed);
   gtk_box_pack_start (GTK_BOX (dialog_vbox), fixed, TRUE, TRUE, 0);
 
-  label = gtk_label_new (_("gXmlViewer\nAuthor : Sean Stuckless"));
+  label = gtk_label_new (_("gxmlviewer\nAuthor : Sean Stuckless"));
   gtk_widget_ref (label);
   gtk_object_set_data_full (GTK_OBJECT (aboutBox), "label", label,
                             (GtkDestroyNotify) gtk_widget_unref);
