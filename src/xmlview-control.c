@@ -1,5 +1,5 @@
 /*
-* $Id: xmlview-control.c,v 1.5 2001/11/01 01:47:42 sean_stuckless Exp $
+* $Id: xmlview-control.c,v 1.6 2001/11/01 02:05:30 sean_stuckless Exp $
 */
 
 #include "xmlview-control.h"
@@ -114,7 +114,7 @@ static BonoboObject *xmlview_factory(BonoboGenericFactory * factory,
     }
 
     /* show the main window */
-    //gtk_widget_show(mainWin);
+    gtk_widget_show(mainWin);
 
     control = bonobo_control_new(mainWin);
 
