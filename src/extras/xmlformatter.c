@@ -1,5 +1,5 @@
 /*
- * $Id: xmlformatter.c,v 1.2 2001/11/20 02:17:11 sean_stuckless Exp $
+ * $Id: xmlformatter.c,v 1.3 2002/07/04 01:46:14 sean_stuckless Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -8,9 +8,9 @@
 
 #include <string.h>
 #include <gtk/gtk.h>
-#include <SAX.h>
-#include <parser.h>
-#include <parserInternals.h>
+#include <libxml/SAX.h>
+#include <libxml/parser.h>
+#include <libxml/parserInternals.h>
 
 #include <unistd.h>
 

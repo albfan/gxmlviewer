@@ -1,5 +1,5 @@
 /*
- * $Id: xmlparser.c,v 1.5 2001/11/29 01:28:46 sean_stuckless Exp $
+ * $Id: xmlparser.c,v 1.6 2002/07/04 01:46:14 sean_stuckless Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -8,15 +8,11 @@
 
 #include <string.h>
 #include <gtk/gtk.h>
-#ifndef WIN32
-#include <SAX.h>
-#include <parser.h>
-#include <parserInternals.h>
-#else
+
 #include <libxml/SAX.h>
 #include <libxml/parser.h>
 #include <libxml/parserInternals.h>
-#endif
+
 #include "xmlparser.h"
 #include "support.h"
 
