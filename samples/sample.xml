@@ -14,9 +14,13 @@ tutu]]>
 <![CDATA[
 ww]]>
 </tag>
-<tag>ff<subtag>hh</subtag>jj</tag>
+<tag>ff<subtag>hh<![CDATA[bindata]]>ff</subtag>jj</tag>
 <tag>kk<!-- remark 3 --></tag>
 <tag>ll<!-- remark 4 -->mm</tag>
 <!-- remark 5 
 next remark -->
+<!--
+<tag/>
+<tag/>
+-->
 </root>
