@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2001-11-14 21:28-0500\n"
+"POT-Creation-Date: 2001-11-19 21:09-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,7 +33,7 @@ msgstr ""
 #: src/interface.c:236
 msgid ""
 "gxmlviewer\n"
-"Author : Sean Stuckless"
+"Author : Sean Stuckless <sean@stuckless.org>"
 msgstr ""
 
 #: src/interface.c:253
