@@ -1,3 +1,10 @@
+2001-11-28  Sean Stuckless <sean@stuckless.org>
+	* applied patch from Samuel Vinson.
+	* better support for empty tags.
+	* better support cdata and comment tags.
+	* added windows project files and windows defines for building under windows.
+	* shows the xml header with encoding.
+
 2001-11-19  Sean Stuckless <sean@stuckless.org>
 	* my email has changed, so updated code should reflect this.
 	* added color syntax highlighting
