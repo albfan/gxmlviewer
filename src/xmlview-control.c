@@ -1,5 +1,5 @@
 /*
-* $Id: xmlview-control.c,v 1.7 2001/11/20 02:02:54 sean_stuckless Exp $
+* $Id: xmlview-control.c,v 1.8 2001/11/20 02:25:48 sean_stuckless Exp $
 */
 
 #ifdef HAVE_CONFIG_H
@@ -8,7 +8,7 @@
 
 #include <stdio.h>
 
-#ifdef HAVE_BONOBO
+#ifdef ENABLE_BONOBO
 
 #include "xmlview-control.h"
 #include <parser.h>
@@ -170,7 +170,7 @@ static gboolean xmlview_factory_init(void)
 
 int main(int argc, char ** argv)
 {
-#ifdef HAVE_BONOBO
+#ifdef ENABLE_BONOBO
     CORBA_Environment ev;
     CORBA_ORB orb;
 
@@ -188,7 +188,11 @@ int main(int argc, char ** argv)
 
     gtk_idle_add((GtkFunction) xmlview_factory_init, NULL);
 
+    g_message("gxmlviewer bonobo control version %s started.", VERSION);
+
     bonobo_main();
+    
+    g_message("gxmlviewer bonobo control version %s shutdown.", VERSION);
 #else
     printf("gxmlviewer bonobo control is not enabled.\n");
 #endif
