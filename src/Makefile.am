@@ -17,7 +17,7 @@ gxmlviewer_SOURCES = \
 	interface.c interface.h \
 	callbacks.c callbacks.h \
         xmlparser.c xmlparser.h \
-	xmlwindow.c xmlwindows.h
+	xmlwindow.c xmlwindow.h
 
 gxmlviewer_LDADD = $(GNOME_LIBDIR) $(GNOMEUI_LIBS) $(INTLLIBS) $(XML_LIBS)
 
