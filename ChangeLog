@@ -1,3 +1,14 @@
+2001-11-19  Sean Stuckless <sean@stuckless.org>
+	* my email has changed, so updated code should reflect this.
+	* added color syntax highlighting
+	* added extras folder with xmlformatter binary that will take an xml input and "pretty print" it.  Use this with caution since reformatting xml may not be a good idea. 
+	* added "gxmlviewer-extras" package for the extra tools
+	* the netscape plugin is now in the "gxmlviewer-plugin" package
+	* the xmlview-control in now in the "gxmlviewer-bonobo" package
+	* configure --without-bonobo will now allow you to build without bonobo installed.  (this is kind of a hack, because i don't know how to properly rebuild the Makefile)
+	* syntax highlighting resulted in cleaner parsing/tree building code, but the fact that we are now using labels for each piece of color data adds more processing overhead.  If you are running on a slower hardware you might notice the performance hit.
+	* currently you cannot change the default colors of the xmltree but in the future it would be nice if you could get the informat from .Xdefaults or some other sort of resource file.
+
 2001-10-31  Sean Stuckless <sstuckless@home.com>
 	* applied diff from Nicholas Marshall <nmarshall@radserver1.2rad.net>
         * diff gave dnd support which worked with Rox filer.
