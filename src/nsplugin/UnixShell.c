@@ -35,7 +35,7 @@
 
 #define MIME_DESCRIPTION "text/xml:xml:text/xml"
 #define NAME             "npgxmlviewer 1.2"
-#define PURPOSE          "gxmlviewer was written by <a href=\"http://members.home.net/sstuckless/index.html\">Sean Stuckless</a> &lt;<a href=\"mailto:sstuckless@home.com\">sstuckless@home.com</a>&gt;.  For more information on gxmlviewer go to <a href=\"http://members.home.net/sstuckless/gxmlviewer/index.html\">gxmlviewer homepage</a>."
+#define PURPOSE          "gxmlviewer was written by <a href=\"http://members.home.net/sstuckless/index.html\">Sean Stuckless</a> &lt;<a href=\"mailto:sstuckless@home.com\">sstuckless@home.com</a>&gt;.  For more information on gxmlviewer go to <a href=\"http://www.sourceforge.net/projects/gxmlviewer/\">gxmlviewer project homepage</a>."
 
 int abortflag;
 
