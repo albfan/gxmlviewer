@@ -8,15 +8,13 @@ gxmlviewer is a xml viewer that uses gtk.  Basically it will parse an xml file u
 
 I built this viewer because Linux lacks a good xml viewer.  In my development I deal with xml files alot and I like to see them in their source view, but I also want to be able to collapse nodes that I do not want to see.
 
-I have also included a plugin for netscape that will attach itself to text/xml xontent types and launch this viewer to view the xml files.  This plugin is simply a window swallower that will swallow the gxmlviewer window inside the netscape display.  The window swallower code is what I ripped off from xswallow.  I thought about using xswallow to perform the window swallowing, but I also wanted to have the rpm for the package install/configure the netscape plugin as well.  xswallow is a neat app, you can check it out at...
+I have also included a plugin for netscape that will attach itself to text/xml xontent types and launch this viewer to view the xml files.  As of this release the plugin will be built and placed in the gxmlviewer-plugin package.  This plugin is simply a window swallower that will swallow the gxmlviewer window inside the netscape display.  The window swallower code is what I ripped off from xswallow.  I thought about using xswallow to perform the window swallowing, but I also wanted to have the rpm for the package install/configure the netscape plugin as well.  xswallow is a neat app, you can check it out at...
 
 > XSwallow documentation is at
 > http://www.csn.ul.ie/~caolan/docs/XSwallow.html
 > Caolan McNamara <caolan@skynet.ie>
 
 Feel free to email me with any problems or suggestions.  (This is my first gtk app. go easy)
-
-In the future I would like to add support for colorizing the xml display.  Currently I don't know how to do this using gtk.
 
 I'll answer this question now, because some of you are going to ask..
 Why gtk??
@@ -33,5 +31,5 @@ if the xmlview-control fails to compile it probably needed the gnome-print packa
 
 
 
-Sean Stuckless <sstuckless@home.com>
+Sean Stuckless <sean@stuckless.org>
 
