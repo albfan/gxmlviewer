@@ -1,5 +1,5 @@
 /*
- * $Id: xmlformatter.c,v 1.1 2001/11/20 02:04:15 sean_stuckless Exp $
+ * $Id: xmlformatter.c,v 1.2 2001/11/20 02:17:11 sean_stuckless Exp $
  */
 
 #ifdef HAVE_CONFIG_H
@@ -428,11 +428,12 @@ int format_xmlfile(const char *filename)
 
 
 static void show_help() {
-   printf("xmlformatter [-s num_spaces] -x xmlfile\n");
+   printf("\nxmlformatter %s Sean Stuckless <sean@stuckless.org>\n", VERSION);
+   printf("xmlformatter will reformat the file and send to stdout.\n");
+   printf("Reformatting xml is not generally a good idea.  Use at your own risk!\n\n");
+   printf("Usage: xmlformatter [-s num_spaces] -x xmlfile\n");
    printf("  -s num_spaces: number of spaces to use for indent\n");
    printf("  -x xmlfile   : xml file to format\n");
-   printf("\n");
-   printf("xmlformatter will reformat the file and send to stdout.\n");
    printf("\n");
 }
 
