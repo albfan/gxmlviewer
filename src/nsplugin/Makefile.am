@@ -1,4 +1,5 @@
 ## Process this file with automake to produce Makefile.in
+# $Id: Makefile.am,v 1.4 2001/08/13 01:50:42 sean_stuckless Exp $
 
 SUBDIRS = common
 
@@ -14,7 +15,7 @@ bin_PROGRAMS = npgxmlviewer.so
 
 npgxmlviewer_so_SOURCES = \
 	UnixShell.c \
-	stubs.c jri.h jri_md.h jritypes.h \
+	jri.h jri_md.h jritypes.h \
 	npapi.h npupp.h
 
 npgxmlviewer_so_LDADD = $(GNOME_LIBDIR) $(GNOMEUI_LIBS) $(INTLLIBS)
