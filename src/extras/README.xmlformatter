@@ -1,0 +1,8 @@
+xmlformatter is a simple xmlformatter. It SHOULD NOT be used as a reliable tool to reformat xml, although it will work in most cases.  Here are the known issues with it...
+1. All entities are removed and converted. (ie, &quot; will be ")
+2. All whitespace inside and outside of tags are removed and then reformatted. (ie, if whitespace matters in your xmlfile, then don't use this to reformat the xml)
+
+If you simply need a tool to reformat xml in some cases for better readibility within a text editor, then this might be useful.  As a rule of thumb, reformatting xml is not a wise idea, since the whitespace may have been important to begin with.
+
+Sean Stuckles <sean@stuckless.org>
+
