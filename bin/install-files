@@ -1,0 +1,55 @@
+#!/bin/sh
+
+gxmlviewer_src=src/gxmlviewer
+gxmlviewer_dest=/usr/local/bin/gxmlviewer
+nsplugin_src=src/nsplugin/npxmlviewer
+nsplugin_dest=/usr/lib/netscape/plugins/npgxmlviewer.so
+
+echo "This will install the following files on your system. (You must be root)"
+echo "$gxmlviewer_dest"
+echo "$nsplugin_dest"
+echo -n "Press enter to install the files.  Type 'quit' to exit. : "
+read answer
+
+if [ ! "$answer" = "" ] ; then
+   echo "No files will be installed."
+   exit 1
+fi
+
+checkSrcFile() {
+   if [ ! -f $1 ] ; then
+      echo "Either you haven't built the program, or you"
+      echo "are not in the root of the project dir, "
+      echo "because $1 cannot be found."
+      exit 2
+   fi
+}
+checkDestFile() {
+   if [ ! -f $1 ] ; then
+      echo "Failed to install file: $1"
+      exit 3
+   fi
+}
+
+installFile() {
+   if [ "$1" = "" ] ; then
+      echo "installFile(): Must provide src argument."
+      exit 8
+   fi
+   if [ "$2" = "" ] ; then
+      echo "installFile(): Must provide dest argument."
+      exit 9
+   fi
+   
+   checkSrcFile $1
+   cp -fv $1 $2
+   checkDestFile $2
+}
+
+installFile $gxmlviewer_src $gxmlviewer_dest
+installFile $nsplugin_src $nsplugin_dest
+
+echo "Files are installed."
+echo "use $gxmlviewer_dest to launch gxmlviewer"
+
+
