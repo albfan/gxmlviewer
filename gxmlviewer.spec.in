@@ -1,6 +1,6 @@
 # Note that this is NOT a relocatable package
 %define ver      @VERSION@
-%define rel      1
+%define rel      2
 
 Summary:   GTK+ XML Viewer
 Name:      gxmlviewer
@@ -46,6 +46,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-, root, root)
 %{_prefix}/bin/gxmlviewer
+%{_prefix}/lib/netscape/plugins/npgxmlviewer.so
 
 %files -n xmlview-control
 %{_prefix}/bin/xmlview-control
