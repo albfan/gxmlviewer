@@ -34,8 +34,8 @@
 #define REPARENT_LOOPS 50
 
 #define MIME_DESCRIPTION "text/xml:xml:text/xml"
-#define NAME             "npgxmlviewer 1.0"
-#define PURPOSE          "Gxmlviewer was written by <a href=\"http://members.home.net/sstuckless/index.html\">Sean Stuckless</a> &lt;<a href=\"mailto:sstuckless@home.com\">sstuckless@home.com</a>&gt;.  For more information on gxmlviewer go to <a href=\"http://members.home.net/sstuckless/gxmlviewer/index.html\">gxmlviewer homepage</a>."
+#define NAME             "npgxmlviewer 1.2"
+#define PURPOSE          "gxmlviewer was written by <a href=\"http://members.home.net/sstuckless/index.html\">Sean Stuckless</a> &lt;<a href=\"mailto:sstuckless@home.com\">sstuckless@home.com</a>&gt;.  For more information on gxmlviewer go to <a href=\"http://members.home.net/sstuckless/gxmlviewer/index.html\">gxmlviewer homepage</a>."
 
 int abortflag;
 
@@ -137,7 +137,7 @@ NPP_New(NPMIMEType mimeType,
     This->victim = 0;;
     This->width = 0;
     This->height = 0;
-    This->swallowedApp = "/usr/local/bin/gxmlviewer";
+    This->swallowedApp = "gxmlviewer";
     /* NOTE: this has to be set to the title of the gxmlviewer application,
     *  or the gxmlviewer application will not be swallowed */
     This->appTitle     = GXMLVIEWER_TITLE;
