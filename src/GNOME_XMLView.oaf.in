@@ -1,0 +1,30 @@
+<oaf_info>
+
+<oaf_server iid="OAFIID:GNOME_XMLView_Factory" type="exe" 
+	location="xmlview-control">
+	<oaf_attribute name="repo_ids" type="stringv">
+		<item value="IDL:Bonobo/GenericFactory:1.0"/>
+	</oaf_attribute>
+	<oaf_attribute name="name" type="string" value="XML Viewer Factory"/>
+	<oaf_attribute name="description" type="string" value="GNOME XML View factory"/>
+</oaf_server>
+
+<oaf_server iid="OAFIID:GNOME_XMLView" type="factory" 
+	location="OAFIID:GNOME_XMLView_Factory">
+	<oaf_attribute name="repo_ids" type="stringv">
+		<item value="IDL:Bonobo/Unknown:1.0"/>
+		<item value="IDL:Bonobo/Control:1.0"/>
+		<item value="IDL:Bonobo/ProgressiveDataSink:1.0"/>
+		<item value="IDL:Bonobo/PersistStream:1.0"/>
+		<item value="IDL:Bonobo/Persist:1.0"/>
+	</oaf_attribute>
+	<oaf_attribute name="name" type="string" value="XML View"/>
+	<oaf_attribute name="description" type="string" value="GNOME XML View"/>
+	<oaf_attribute name="bonobo:editable" type="boolean" value="false"/>
+	<oaf_attribute name="bonobo:supported_mime_types" type="stringv">
+		<item value="text/html"/>
+		<item value="text/xml"/>
+	</oaf_attribute>
+</oaf_server>
+
+</oaf_info>
