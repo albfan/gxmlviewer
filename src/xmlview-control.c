@@ -56,7 +56,6 @@ static void xmlview_ps_load (BonoboPersistStream * ps,
       break;
     if (buffer->_length <= 0)
       break;
-    printf("%s\n", buffer->_buffer);
     {
       xmlParserCtxtPtr ctxt;
       AppParseState state;
@@ -113,81 +112,83 @@ xmlview_ps_types (BonoboPersistStream * ps,
 		   gpointer data,
 		   CORBA_Environment * ev)
 {
-	return bonobo_persist_generate_content_types (1, "text/xml");
+  return bonobo_persist_generate_content_types (1, "text/xml");
 }
 
 static void
 control_destroy_cb (BonoboControl * control, gpointer data)
 {
-	bonobo_object_unref (BONOBO_OBJECT (data));
-	if (--refcount < 1)
-		gtk_main_quit ();
+  bonobo_object_unref (BONOBO_OBJECT (data));
+  if (--refcount < 1)
+    gtk_main_quit ();
 }
 
 static BonoboObject *
 xmlview_factory (BonoboGenericFactory * factory, void * closure)
 {
-	BonoboControl * control;
-	BonoboPersistStream * stream;
-	GtkWidget * mainWin, * viewport1, * xmltree;
+  BonoboControl * control;
+  BonoboPersistStream * stream;
+  GtkWidget * mainWin, * viewport1, * xmltree;
 
 #ifdef ENABLE_NLS
-	bindtextdomain (PACKAGE, PACKAGE_LOCALE_DIR);
-	textdomain (PACKAGE);
+  bindtextdomain (PACKAGE, PACKAGE_LOCALE_DIR);
+  textdomain (PACKAGE);
 #endif
 
-	mainWin = gtk_scrolled_window_new (NULL, NULL);
-	gtk_widget_ref (mainWin);
-	gtk_object_set_data_full (GTK_OBJECT (mainWin), "scrolledwindow1",
-				  mainWin,
-				  (GtkDestroyNotify) gtk_widget_unref);
-	gtk_widget_show (mainWin);
-	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (mainWin), 
-					GTK_POLICY_AUTOMATIC,
-					GTK_POLICY_AUTOMATIC);
+  mainWin = gtk_scrolled_window_new (NULL, NULL);
+  gtk_widget_ref (mainWin);
 
-	viewport1 = gtk_viewport_new (NULL, NULL);
-	gtk_widget_ref (viewport1);
-	gtk_object_set_data_full (GTK_OBJECT (mainWin), "viewport1",
-				  viewport1,
-				  (GtkDestroyNotify) gtk_widget_unref);
-	gtk_widget_show (viewport1);
-	gtk_container_add (GTK_CONTAINER (mainWin), viewport1);
-	
-	xmltree = gtk_tree_new ();
-	gtk_widget_ref (xmltree);
-	gtk_object_set_data_full (GTK_OBJECT (mainWin), "xmltree", xmltree,
-				  (GtkDestroyNotify) gtk_widget_unref);
-	gtk_widget_show (xmltree);
-	gtk_container_add (GTK_CONTAINER (viewport1), xmltree);
-	gtk_tree_set_view_mode (GTK_TREE (xmltree), GTK_TREE_VIEW_ITEM);
-	gtk_tree_set_view_lines (GTK_TREE (xmltree), FALSE);
+  gtk_widget_set_usize (mainWin, 320, 200);
+  gtk_object_set_data_full (GTK_OBJECT (mainWin), "scrolledwindow1",
+			    mainWin,
+			    (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_show (mainWin);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (mainWin), 
+				  GTK_POLICY_AUTOMATIC,
+				  GTK_POLICY_AUTOMATIC);
 
-	/* show the main window */ 
-	gtk_widget_show (mainWin);
+  viewport1 = gtk_viewport_new (NULL, NULL);
+  gtk_widget_ref (viewport1);
+  gtk_object_set_data_full (GTK_OBJECT (mainWin), "viewport1",
+			    viewport1,
+			    (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_show (viewport1);
+  gtk_container_add (GTK_CONTAINER (mainWin), viewport1);
+  
+  xmltree = gtk_tree_new ();
+  gtk_widget_ref (xmltree);
+  gtk_object_set_data_full (GTK_OBJECT (mainWin), "xmltree", xmltree,
+			    (GtkDestroyNotify) gtk_widget_unref);
+  gtk_widget_show (xmltree);
+  gtk_container_add (GTK_CONTAINER (viewport1), xmltree);
+  gtk_tree_set_view_mode (GTK_TREE (xmltree), GTK_TREE_VIEW_ITEM);
+  gtk_tree_set_view_lines (GTK_TREE (xmltree), FALSE);
 
-	control = bonobo_control_new (mainWin);
+  /* show the main window */ 
+  gtk_widget_show (mainWin);
 
-	bonobo_control_set_automerge (control, TRUE);
+  control = bonobo_control_new (mainWin);
 
-	if (!control) {
-		gtk_object_destroy (GTK_OBJECT (mainWin));
-		return NULL;
-	}
+  bonobo_control_set_automerge (control, TRUE);
 
-	stream = bonobo_persist_stream_new (xmlview_ps_load, NULL, 
-					    NULL, xmlview_ps_types,
-					    xmltree);
+  if (!control) {
+    gtk_object_destroy (GTK_OBJECT (mainWin));
+    return NULL;
+  }
 
-	bonobo_object_add_interface (BONOBO_OBJECT (control),
-				     BONOBO_OBJECT (stream));
+  stream = bonobo_persist_stream_new (xmlview_ps_load, NULL, 
+				      NULL, xmlview_ps_types,
+				      xmltree);
 
-	gtk_signal_connect (GTK_OBJECT (mainWin), "destroy",
-			    control_destroy_cb, control);
+  bonobo_object_add_interface (BONOBO_OBJECT (control),
+			       BONOBO_OBJECT (stream));
 
-	refcount++;
+  gtk_signal_connect (GTK_OBJECT (mainWin), "destroy",
+		      control_destroy_cb, control);
 
-	return BONOBO_OBJECT (control);
+  refcount++;
+
+  return BONOBO_OBJECT (control);
 }
 
 static gboolean
@@ -206,23 +207,23 @@ xmlview_factory_init (void)
 
 int main (int argc, gchar ** argv)
 {
-	CORBA_Environment ev;
-	CORBA_ORB orb;
+  CORBA_Environment ev;
+  CORBA_ORB orb;
 
-	CORBA_exception_init (&ev);
+  CORBA_exception_init (&ev);
+  
+  gnome_init_with_popt_table ("GNOMEXMLView", VERSION,
+			      argc, argv,
+			      oaf_popt_options, 0, NULL);
 
-	gnome_init_with_popt_table ("GNOMEXMLView", VERSION,
-				    argc, argv,
-				    oaf_popt_options, 0, NULL);
+  orb = oaf_init (argc, argv);
 
-	orb = oaf_init (argc, argv);
+  if (bonobo_init (orb, NULL, NULL) == FALSE)
+    g_error ("Couldn't initialize Bonobo");
 
-	if (bonobo_init (orb, NULL, NULL) == FALSE)
-		g_error ("Couldn't initialize Bonobo");
+  gtk_idle_add ((GtkFunction) xmlview_factory_init, NULL);
+  
+  bonobo_main ();
 
-	gtk_idle_add ((GtkFunction) xmlview_factory_init, NULL);
-
-	bonobo_main ();
-
-	return 0;
+  return 0;
 }
