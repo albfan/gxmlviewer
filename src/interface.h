@@ -5,3 +5,4 @@
 GtkWidget* create_mainWin (void);
 GtkWidget* create_fileselection (void);
 GtkWidget* create_aboutBox (void);
+GtkWidget *xmlwindow_new(GtkWidget *parent);
