@@ -1,2 +1,10 @@
+2001-06-30  Rodney Dawes <dobey@free.fr>
+
+	* src/xmlview-control.[ch]: Added files
+	* src/xmlparser.[ch]: Split out stuff that the control needs
+	* src/Makefile.am: Added bonobo stuff
+	* configure.in: Added bonobo check, oaf file generation, and up version
+	* acconfig.h: Updated to include appropriate defines
+	
 june 23, 2001 - initial revision with netscape plugin.
 
