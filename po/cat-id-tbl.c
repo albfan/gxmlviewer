@@ -11,8 +11,14 @@ const struct _msg_ent _msg_tbl[] = {
   {"XML Viewer", 2},
   {"Select File", 3},
   {"xmlviewer for gnome.", 4},
-  {"Couldn't find pixmap file: %s", 5},
-  {"Couldn't create pixmap from file: %s", 6},
+  {"About", 5},
+  {"\
+gXmlViewer\n\
+Author : Sean Stuckless", 6},
+  {"Ok", 7},
+  {"Couldn't find pixmap file: %s", 8},
+  {"Couldn't create pixmap from file: %s", 9},
+  {"Error loading pixmap file: %s", 10},
 };
 
-int _msg_tbl_length = 6;
+int _msg_tbl_length = 10;
