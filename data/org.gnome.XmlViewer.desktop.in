@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=gxmlviewer
+Exec=gxmlviewer
+Terminal=false
+Type=Application
+Categories=GTK;
+StartupNotify=true

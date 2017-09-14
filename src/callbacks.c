@@ -43,7 +43,7 @@ void on_file_select_button_clicked(GtkButton * button, gpointer user_data)
         lookup_widget(GTK_WIDGET(button), FILE_SELECTION);
     if (fileDialog != NULL) {
         const gchar *filename =
-            gtk_file_selection_get_filename(GTK_FILE_SELECTION
+            gtk_file_chooser_get_filename(GTK_FILE_CHOOSER
                                             (fileDialog));
         if (filename == NULL) {
             g_message("file is null!!");
@@ -51,7 +51,7 @@ void on_file_select_button_clicked(GtkButton * button, gpointer user_data)
             GtkWidget *xmltree = lookup_widget(GTK_WIDGET(gMainWindow),
                                                XMLTREE_WIDGET_NAME);
             if (xmltree != NULL) {
-                gtk_tree_clear_items(GTK_TREE(xmltree), 0, 99);
+                //gtk_tree_clear_items(GTK_TREE(xmltree), 0, 99);
                 if (show_xmlfile(filename, xmltree)) {
                     /*
                      * unable to process file 
@@ -86,7 +86,8 @@ on_mainWin_drag_data_received(GtkWidget * widget,
 {
     GtkWidget *xmltree =
         lookup_widget(GTK_WIDGET(gMainWindow), XMLTREE_WIDGET_NAME);
-    char *filename = data->data;
+    //char *filename = data->target;
+    char *filename = "";
     char *fn = strchr(filename, ':');
     char *end = strchr(fn, '\r');
     if (fn != NULL) {
@@ -111,10 +112,10 @@ on_mainWin_drag_data_received(GtkWidget * widget,
     }
     g_message("Parsed  Filename: [%s]\n", fn);
 
-    if ((data->length >= 0) && (data->format == 8)) {
-        gtk_tree_clear_items(GTK_TREE(xmltree), 0, 99);
-        show_xmlfile(fn, xmltree);
-        gtk_drag_finish(drag_context, TRUE, FALSE, time);
-        return;
-    }
+    //if ((data->length >= 0) && (data->format == 8)) {
+        //gtk_tree_clear_items(GTK_TREE(xmltree), 0, 99);
+    //    show_xmlfile(fn, xmltree);
+    //    gtk_drag_finish(drag_context, TRUE, FALSE, time);
+    //    return;
+    //}
 }

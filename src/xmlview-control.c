@@ -168,34 +168,34 @@ static gboolean xmlview_factory_init(void)
 
 #endif
 
-int main(int argc, char ** argv)
-{
-#ifdef ENABLE_BONOBO
-    CORBA_Environment ev;
-    CORBA_ORB orb;
-
-    DEBUG_CMD(g_message("main"));
-
-    CORBA_exception_init(&ev);
-
-    gnome_init_with_popt_table("GNOMEXMLView", VERSION,
-			       argc, argv, oaf_popt_options, 0, NULL);
-
-    orb = oaf_init(argc, argv);
-
-    if (bonobo_init(orb, NULL, NULL) == FALSE)
-	g_error("Couldn't initialize Bonobo");
-
-    gtk_idle_add((GtkFunction) xmlview_factory_init, NULL);
-
-    g_message("gxmlviewer bonobo control version %s started.", VERSION);
-
-    bonobo_main();
-    
-    g_message("gxmlviewer bonobo control version %s shutdown.", VERSION);
-#else
-    printf("gxmlviewer bonobo control is not enabled.\n");
-#endif
-    return 0;
-}
+//int main(int argc, char ** argv)
+//{
+//#ifdef ENABLE_BONOBO
+//    CORBA_Environment ev;
+//    CORBA_ORB orb;
+//
+//    DEBUG_CMD(g_message("main"));
+//
+//    CORBA_exception_init(&ev);
+//
+//    gnome_init_with_popt_table("GNOMEXMLView", VERSION,
+//			       argc, argv, oaf_popt_options, 0, NULL);
+//
+//    orb = oaf_init(argc, argv);
+//
+//    if (bonobo_init(orb, NULL, NULL) == FALSE)
+//	g_error("Couldn't initialize Bonobo");
+//
+//    gtk_idle_add((GtkFunction) xmlview_factory_init, NULL);
+//
+//    g_message("gxmlviewer bonobo control version %s started.", VERSION);
+//
+//    bonobo_main();
+//    
+//    g_message("gxmlviewer bonobo control version %s shutdown.", VERSION);
+//#else
+//    printf("gxmlviewer bonobo control is not enabled.\n");
+//#endif
+//    return 0;
+//}
 

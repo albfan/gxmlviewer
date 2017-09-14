@@ -29,13 +29,14 @@ lookup_widget                          (GtkWidget       *widget,
       if (GTK_IS_MENU (widget))
         parent = gtk_menu_get_attach_widget (GTK_MENU (widget));
       else
-        parent = widget->parent;
+        //parent = widget->parent;
+        parent = NULL;
       if (parent == NULL)
         break;
       widget = parent;
     }
 
-  found_widget = (GtkWidget*) gtk_object_get_data (GTK_OBJECT (widget),
+  found_widget = (GtkWidget*) g_object_get_data (G_OBJECT (widget),
                                                    widget_name);
   if (!found_widget)
     g_warning ("Widget not found: %s", widget_name);
@@ -60,10 +61,10 @@ create_dummy_pixmap                    (GtkWidget       *widget
 #endif
 					)
 {
-  GdkColormap *colormap;
-  GdkPixmap *gdkpixmap;
-  GdkBitmap *mask;
-  GtkWidget *pixmap;
+  //GdkColormap *colormap;
+  //GdkPixmap *gdkpixmap;
+  //GdkBitmap *mask;
+  //GtkWidget *pixmap;
 
 #ifdef NEED_GNOMESUPPORT_H
   if (gnome_pixmap)
@@ -72,15 +73,16 @@ create_dummy_pixmap                    (GtkWidget       *widget
     }
 #endif
 
-  colormap = gtk_widget_get_colormap (widget);
-  gdkpixmap = gdk_pixmap_colormap_create_from_xpm_d (NULL, colormap, &mask,
-                                                     NULL, dummy_pixmap_xpm);
-  if (gdkpixmap == NULL)
-    g_error ("Couldn't create replacement pixmap.");
-  pixmap = gtk_pixmap_new (gdkpixmap, mask);
-  gdk_pixmap_unref (gdkpixmap);
-  gdk_bitmap_unref (mask);
-  return pixmap;
+  //colormap = gtk_widget_get_colormap (widget);
+  //gdkpixmap = gdk_pixmap_colormap_create_from_xpm_d (NULL, colormap, &mask,
+  //                                                   NULL, dummy_pixmap_xpm);
+  //if (gdkpixmap == NULL)
+  //  g_error ("Couldn't create replacement pixmap.");
+  //pixmap = gtk_pixmap_new (gdkpixmap, mask);
+  //gdk_pixmap_unref (gdkpixmap);
+  //gdk_bitmap_unref (mask);
+  //return pixmap;
+  return NULL;
 }
 
 /* This is an internally used function to create pixmaps. */
@@ -176,9 +178,9 @@ create_pixmap                          (GtkWidget       *widget,
                                         const gchar     *filename)
 {
   gchar *found_filename = NULL;
-  GdkColormap *colormap;
-  GdkPixmap *gdkpixmap;
-  GdkBitmap *mask;
+  //GdkColormap *colormap;
+  //GdkPixmap *gdkpixmap;
+  //GdkBitmap *mask;
   GtkWidget *pixmap;
   GList *elem;
 
@@ -204,20 +206,21 @@ create_pixmap                          (GtkWidget       *widget,
       return create_dummy_pixmap (widget);
     }
 
-  colormap = gtk_widget_get_colormap (widget);
-  gdkpixmap = gdk_pixmap_colormap_create_from_xpm (NULL, colormap, &mask,
-                                                   NULL, found_filename);
-  if (gdkpixmap == NULL)
-    {
-      g_warning (_("Error loading pixmap file: %s"), found_filename);
-      g_free (found_filename);
-      return create_dummy_pixmap (widget);
-    }
+  //colormap = gtk_widget_get_colormap (widget);
+  //gdkpixmap = gdk_pixmap_colormap_create_from_xpm (NULL, colormap, &mask,
+  //                                                 NULL, found_filename);
+  //if (gdkpixmap == NULL)
+  //  {
+  //    g_warning (_("Error loading pixmap file: %s"), found_filename);
+  //    g_free (found_filename);
+  //    return create_dummy_pixmap (widget);
+  //  }
   g_free (found_filename);
-  pixmap = gtk_pixmap_new (gdkpixmap, mask);
-  gdk_pixmap_unref (gdkpixmap);
-  gdk_bitmap_unref (mask);
-  return pixmap;
+  //pixmap = gtk_pixmap_new (gdkpixmap, mask);
+  //gdk_pixmap_unref (gdkpixmap);
+  //gdk_bitmap_unref (mask);
+  //return pixmap;
+  return NULL;
 }
 
 /* This is an internally used function to check if a pixmap file exists. */
